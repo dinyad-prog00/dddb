@@ -1,0 +1,1 @@
+export {default as uriParser} from "./uriParser"

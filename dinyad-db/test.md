@@ -1,0 +1,2 @@
+loves.getAll()
+loves.getOne(
