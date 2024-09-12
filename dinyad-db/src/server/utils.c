@@ -1,6 +1,7 @@
 #include "utils.h"
 #include "../store/store.h"
 #include "../helpers/helpers.h"
+#include "../realtime/realtime.h"
 
 char *handle_cmd(cJSON *req_json)
 {
@@ -85,11 +86,19 @@ char *handle_request(char *req)
     else if (isPOST(method))
     {
         cJSON *data = cJSON_GetObjectItemCaseSensitive(req_json, "data");
+
         if (data == NULL)
         {
             return make_res("body data is required", 1, 1);
         }
-        return make_res(insert_one(db, rsrc, data), 0, 0);
+
+        char *res = insert_one(db, rsrc, data);
+
+        notify(rsrc, cJSON_Parse(res));
+
+        printf("\nnoti so ===================== res\n");
+
+        return make_res(res, 0, 0);
     }
     else if (isDELETE(method))
     {
@@ -127,7 +136,7 @@ char *handle_request(char *req)
 void handle_client(int client_socket)
 {
 
-    char req[100000];
+    char req[MESSAGE_MAX_L];
 
     while (1)
     {
@@ -191,7 +200,10 @@ char *make_res(char *res_str, int error, int string)
         cJSON_AddItemToObject(resjs, "data", cJSON_Parse(string ? s : res_str));
         free(s); // not here
     }
-    return cJSON_Print(resjs);
+    resjs->next = NULL;
+    char *res = cJSON_Print(resjs);
+    printf("yyyyyyyyyyyyyyyyyyy =\n%s\n yyyyyyyyyyyyyyyyyyyyyyy=", res);
+    return res;
 }
 
 Config *load_config(char *conf_path)

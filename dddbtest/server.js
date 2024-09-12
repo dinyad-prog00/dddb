@@ -7,24 +7,47 @@ const dddb = new Dddb()
 
 const db = dddb.db()
 
-dddb.connect("dddb://localhost:33301/test", () => {
+dddb.connect("dddb://admin:yeto20@localhost:33301/test", () => {
     console.log("Connected successfully !")
-})
+},
+    (err) => {
+        console.log("Error de connexion: ", err.message)
+    })
 
 app.use(json())
 
-app.get("/", async (req, res) => {
-    const Task = db.model("books")
-    const data = await Task.find({})
+app.get("/books", async (req, res) => {
+    const data = await db.model("books").find({})
     res.send(data)
 })
 
-app.get("/:id", async (req, res) => {
-    const {id} = req.params
+
+app.get("/sub", async (req, res) => {
+
+    dddb.db("test").ref("books").subscribe((data) => {
+        console.log("sub data ============= ", data)
+    })
+    res.send("Done")
+})
+
+app.post("/books/f", async (req, res) => {
+    const f = req.body;
+    const data = await db.model("books").find(f)
+    res.send(data)
+})
+
+app.get("/books/:id", async (req, res) => {
+    const { id } = req.params
     const data = await db.model("books").findById(id)
     res.send(data)
 })
 
-app.listen(3333,()=>{
+app.post("/books", async (req, res) => {
+    const body = req.body;
+    const data = await db.model("books").create(body)
+    res.send(data)
+})
+
+app.listen(3333, () => {
     console.log("Server listening on port 3333")
 })

@@ -17,11 +17,8 @@ const repl = (host, port) => {
 
     const colls = ["tasks", "books", "students"];
 
-    dddb.connect(`dddb://${host}:${port}/test`, () => {
+    dddb.connect(`dddb://admin:yeto20@${host}:${port}/test`, () => {
         console.log("Connected successfully !")
-
-
-
         async function myEval(code, context, filename, callback) {
             code = processTopLevelAwait(code) || code;
 

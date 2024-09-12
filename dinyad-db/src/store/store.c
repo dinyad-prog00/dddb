@@ -120,6 +120,7 @@ cJSON *get_collection(char db_name[], char collection_name[])
 int store_collection(cJSON *collection, char *path)
 {
     char *s = cJSON_Print(collection);
+    printf("%s", s);
     FILE *file = fopen(path, "w");
 
     if (file == NULL)
@@ -152,8 +153,9 @@ char *insert_one(char db_name[], char collection_name[], cJSON *data)
     cJSON *collection = get_collection(db_name, collection_name);
 
     cJSON_AddStringToObject(data, "_id", generate_uid());
+    data->next = NULL;
 
-    if (cJSON_IsObject(data))
+        if (cJSON_IsObject(data))
     {
         cJSON_AddItemToArray(collection, data);
         store_collection(collection, path);
@@ -203,7 +205,7 @@ cJSON_bool pass_filter(cJSON *item, cJSON *filter)
     return 0;
 }
 
-char *find_by_id(char db_name[], char collection_name[], cJSON *id)
+cJSON *find_by_unique_key(char db_name[], char collection_name[], char *key_name, cJSON *key_value)
 {
     cJSON *collection = get_collection(db_name, collection_name);
     cJSON *item;
@@ -211,12 +213,20 @@ char *find_by_id(char db_name[], char collection_name[], cJSON *id)
     cJSON_ArrayForEach(item, collection)
     {
 
-        if (check_attr_value(item, "_id", id, 1))
+        if (check_attr_value(item, key_name, key_value, 1))
         {
-            return cJSON_Print(item);
+            return item;
         }
     }
     return NULL;
+}
+
+char *find_by_id(char db_name[], char collection_name[], cJSON *id)
+{
+    cJSON *collection = get_collection(db_name, collection_name);
+
+    cJSON *item = find_by_unique_key(db_name, collection_name, "_id", id);
+    return cJSON_Print(item);
 }
 
 char *find(char db_name[], char collection_name[], cJSON *single, cJSON *filter, cJSON *options)

@@ -40,7 +40,10 @@ char *insert_one(char db_name[], char collection_name[], cJSON *data);
 cJSON_bool check_attr_value(cJSON *item, char *attr, cJSON *value, cJSON_bool case_sensitive);
 cJSON_bool pass_filter(cJSON *item, cJSON *filter);
 char *find(char db_name[], char collection_name[], cJSON *single, cJSON *filter, cJSON *options);
+
+cJSON *find_by_unique_key(char db_name[], char collection_name[], char *key_name, cJSON *key_value);
 char *find_by_id(char db_name[], char collection_name[], cJSON *id);
+
 char *get_all(char db_name[], char collection_name[], cJSON *options);
 char *delete(char db_name[], char collection_name[], cJSON *single, cJSON *filter);
 char *update(char db_name[], char collection_name[], cJSON *single, cJSON *filter, cJSON *data);

@@ -1,5 +1,5 @@
 exec : 
-	gcc src/main.c src/store/store.c  src/helpers/helpers.c  src/server/utils.c lib/cjson/cJSON.c  src/server/server.c -g -levent -o main  && ./main
+	gcc src/main.c src/store/store.c  src/helpers/helpers.c  src/realtime/realtime.c src/server/utils.c src/auth/utils.c lib/cjson/cJSON.c  src/server/server.c -g -levent -o main 
 run : 
 	./main
 

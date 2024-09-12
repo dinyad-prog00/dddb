@@ -6,30 +6,69 @@ class Dddb {
     defaultDbName = "test";
     client = new net.Socket();
 
+    //to be removed
+    uri?: string
+
     /** Connect to the dddb server  */
     connect(uri: string, onConnect?: () => void, onError?: (error: Error) => void) {
-        const { host, port, dbname } = uriParser(uri)
+
+        //to be removed
+        
+        this.uri = uri
+        console.log("1",this.uri)
+
+        const { host, port, dbname, username, password } = uriParser(uri)
+
         return new Promise((resolve, reject) => {
-            this.client.connect(port, host, () => {
-                if (onConnect) {
-                    onConnect();
+            const onLoginAnswerReceived = (data: any) => {
+                const answer = Buffer.from(data).toString();
+                if (answer === "Authentication successful!") {
+                    console.log(answer)
+                    if (onConnect) {
+                        onConnect();
+                    }
+                    this.client.removeListener('data', onLoginAnswerReceived)
+                    resolve(true);
+                } else {
+                    this.client.removeListener('data', onLoginAnswerReceived)
+                    if (onError) {
+                        onError(new Error(answer))
+                    }
+                    resolve(false)
                 }
+            }
+            this.client.connect(port, host, () => {
+
+                const auth = {
+                    type: "LOGIN",
+                    username,
+                    password
+                }
+
+                this.client.write(JSON.stringify(auth));
+
+
+
+                this.client.on('data', onLoginAnswerReceived);
+
                 this.defaultDbName = dbname;
-                resolve(true);
+
             });
 
             this.client.on('error', (err) => {
                 if (onError) {
                     onError(err)
                 }
-                reject(err);
+                this.client.removeListener('data', onLoginAnswerReceived)
+                resolve(false);
             });
         });
     }
 
     /** Get a db */
     db(dbName?: string) {
-        return new Db(this.client,dbName ? dbName : this.defaultDbName)
+        console.log("2",this.uri)
+        return new Db(this.client, dbName ? dbName : this.defaultDbName,this.uri)
     }
 }
 
