@@ -7,7 +7,7 @@ const dddb = new Dddb()
 
 const db = dddb.db()
 
-dddb.connect("dddb://admin:yeto20@localhost:33301/test", () => {
+dddb.connect("dddb://admin:admin010@localhost:33301/test", () => {
     console.log("Connected successfully !")
 },
     (err) => {

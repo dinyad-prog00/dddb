@@ -14,8 +14,7 @@
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
     "build:esm": "tsc --target es2018 --outDir dist/esm",
     "build": "npm run build:esm && npm run build:cjs",
-    "preversion": "npm run build",
-    "repl": "node dist/repl.js"
+    "preversion": "npm run build"
   },
   "keywords": [
     "Dddb",

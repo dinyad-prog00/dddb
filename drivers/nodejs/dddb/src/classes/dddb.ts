@@ -1,6 +1,7 @@
 import * as net from "net"
 import { uriParser } from "../utils";
 import Db from "./db";
+import { sendRequest } from "../client";
 
 class Dddb {
     defaultDbName = "test";
@@ -13,9 +14,9 @@ class Dddb {
     connect(uri: string, onConnect?: () => void, onError?: (error: Error) => void) {
 
         //to be removed
-        
+
         this.uri = uri
-        console.log("1",this.uri)
+        console.log("1", this.uri)
 
         const { host, port, dbname, username, password } = uriParser(uri)
 
@@ -67,8 +68,19 @@ class Dddb {
 
     /** Get a db */
     db(dbName?: string) {
-        console.log("2",this.uri)
-        return new Db(this.client, dbName ? dbName : this.defaultDbName,this.uri)
+        console.log("2", this.uri)
+        return new Db(this.client, dbName ? dbName : this.defaultDbName, this.uri)
+    }
+    async execCmd(cmd: string) {
+        return await sendRequest(this.client, { type: "cmd", cmd })
+    }
+    async getDatabases() {
+        const res: any = await this.execCmd("dbs")
+        return res.split("|").filter((it: any) => it !== "")
+    }
+
+    async createDatabase(name: string) {
+        return await this.execCmd(`createdb ${name}`)
     }
 }
 
