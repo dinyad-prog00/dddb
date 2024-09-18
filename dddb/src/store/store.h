@@ -12,7 +12,7 @@
 #ifndef STORE_H
 #define STORE_H
 
-#define DB_DIR "dddb"
+#define DB_DIR "dddb.dbs"
 
 #define SINGLE_REF 0
 #define MANY_REF 1
