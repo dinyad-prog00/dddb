@@ -21,21 +21,6 @@ app.get("/books", async (req, res) => {
     res.send(data)
 })
 
-
-app.get("/sub", async (req, res) => {
-
-    dddb.db("test").ref("books").subscribe((data) => {
-        console.log("sub data ============= ", data)
-    })
-    res.send("Done")
-})
-
-app.post("/books/f", async (req, res) => {
-    const f = req.body;
-    const data = await db.model("books").find(f)
-    res.send(data)
-})
-
 app.get("/books/:id", async (req, res) => {
     const { id } = req.params
     const data = await db.model("books").findById(id)
@@ -45,6 +30,13 @@ app.get("/books/:id", async (req, res) => {
 app.post("/books", async (req, res) => {
     const body = req.body;
     const data = await db.model("books").create(body)
+    res.send(data)
+})
+
+
+app.post("/books/f", async (req, res) => {
+    const f = req.body;
+    const data = await db.model("books").find(f)
     res.send(data)
 })
 

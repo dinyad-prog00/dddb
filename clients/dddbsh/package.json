@@ -2,10 +2,10 @@
   "name": "dddbtest",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/cli.js",
   "type": "module",
   "bin": {
-    "dddbsh": "cli.js"
+    "dddbsh": "./src/cli.js"
   },
   "scripts": {
     "cli": "node cli.js",

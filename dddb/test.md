@@ -1,2 +1,0 @@
-loves.getAll()
-loves.getOne(

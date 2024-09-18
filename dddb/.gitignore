@@ -1,3 +1,11 @@
 /src/clients/dddb/node_modules
 /src/clients/dddb/dist
-dddb.dbs
+
+# dbs dir
+dddb.dbs/*
+!dddb.dbs/admin.db 
+!dddb.dbs/test.db
+
+
+dddb
+dddbsh_history

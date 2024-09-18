@@ -22,6 +22,14 @@ app.post("/books", async (req, res) => {
     res.send(data)
 })
 
+app.get("/sub", async (req, res) => {
+
+    dddb.db("test").ref("books").subscribe((data) => {
+        console.log("sub data ============= ", data)
+    })
+    res.send("Done")
+})
+
 app.listen(3334, () => {
     console.log("Server listening on port 3333")
 })
