@@ -65,5 +65,12 @@ make debug
 
 - **CLI Client**: A command-line interface (CLI) client called `dddbsh` (DDDB Shell) is available in [`clients/dddbsh`](clients/dddbsh). This client allows you to interact with the 3DB server from the terminal. Refer to [`clients/dddbsh/README.md`](clients/dddbsh/README.md)
 
+
+  ![dddbsh](images/dddbsh-h.png)
+
+
+  ![Using dddbsh](images/dddbsh.png)
+
+
 - **Node.js Test Project**: A Node.js test project is included in the repository under [`test-project`](test-project) to demonstrate usage of the Node.js driver and interact with the 3DB server.
 
