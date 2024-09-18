@@ -1,0 +1,38 @@
+{
+  "name": "dddbtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/cli.js",
+  "type": "module",
+  "bin": {
+    "dddbsh": "./src/cli.js"
+  },
+  "scripts": {
+    "cli": "node cli.js",
+    "start": "nodemon server.js",
+    "repl": "node repl.js",
+    "repl2": "node repl2.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "express": "^4.18.2",
+    "node-repl-await": "^0.1.2",
+    "pkg": "^5.8.1",
+    "vm": "^0.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {},
+  "pkg": {
+    "scripts": "./**/*.js",
+    "targets": [
+      "node18-linux-x64"
+    ],
+    "outputPath": "dist"
+  }
+}
